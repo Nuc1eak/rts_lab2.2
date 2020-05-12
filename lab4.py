@@ -46,7 +46,22 @@ x = create_harmon()
 fft = fft(x)
 data_fft = [np.sqrt(fft[i][0] ** 2 + fft[i][1] ** 2) for i in range(vidlik_number)]
 
-plt.plot([i for i in range(vidlik_number)], x)
+# fft в з бібліотеки numpy
+np_fft = np.fft.fft(x)
+data_np_fft = [np.sqrt(np_fft.real[i] ** 2 + np_fft.imag[i] ** 2) for i in range(vidlik_number)]
+# Відхилення мого fft від numpy fft
+vidhil = [data_fft[i] - data_np_fft[i] for i in range(vidlik_number)]
+
+fig = plt.figure()
+ax_1 = fig.add_subplot(2, 1, 1)
+ax_2 = fig.add_subplot(2, 1, 2)
+ax_1.plot(range(vidlik_number), data_fft)
+ax_2.plot(range(vidlik_number), data_np_fft)
+ax_1.set(title='myFFT')
+ax_2.set(title='npFFT')
 plt.show()
-plt.plot([i for i in range(vidlik_number)], data_fft)
+
+
+plt.plot(range(vidlik_number), vidhil, label="Відхилення")
+plt.legend()
 plt.show()
